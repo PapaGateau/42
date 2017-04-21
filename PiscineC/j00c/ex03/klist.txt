@@ -1,0 +1,7 @@
+Credentials cache: API:5C7D16A8-DF4A-4E01-B567-0FF622BC25C6
+        Principal: plogan@42.FR
+
+ Issued                Expires               Principal
+ Mar  7 14:01:03 2017  Mar 14 14:01:03 2017  krbtgt/42.FR@42.FR
+ Mar  7 14:01:04 2017  Mar 14 14:01:03 2017  ldap/ldap-proxy.42.fr@42.FR
+ Mar  7 14:01:04 2017  Mar 14 14:01:03 2017  HTTP/student-storage-1.42.fr@42.FR
