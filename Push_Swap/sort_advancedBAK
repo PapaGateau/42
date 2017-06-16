@@ -1,0 +1,170 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_advanced.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/15 17:00:20 by plogan            #+#    #+#             */
+/*   Updated: 2017/06/16 15:47:16 by plogan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
+
+void		make_moves(t_weight *opti, t_stack **a, t_stack **b)
+{
+	int		ra;
+	int		rb;
+
+	ra = opti->ra;
+	rb = opti->rb;
+//	printf("ra: %d\n", ra);
+//	printf("rb: %d\n", rb);
+	while (ra)
+	{
+		if (ra < 0)
+		{
+			ft_op_rra(a, b, 1);
+			ra++;
+		}
+		else
+		{
+			ft_op_ra(a, b, 1);
+			ra--;
+		}
+	}
+	while (rb)
+	{
+		if (rb < 0)
+		{
+			ft_op_rrb(a, b, 1);
+			rb++;
+		}
+		else
+		{
+			ft_op_rb(a, b, 1);
+			rb--;
+		}
+	}
+	ft_op_pb(a, b, 1);
+}
+
+int			get_a_weight(int pos, t_stack **a)
+{
+	int		a_weight;
+	int		stack_size;
+
+	a_weight = 0;
+	stack_size = measure_stack(a);
+	if (pos > stack_size - pos)
+		a_weight = stack_size - pos;
+	else
+		a_weight = pos;
+	return (a_weight);
+}
+
+int			get_b_weight(int data, t_stack **b) //this is fkd up
+{
+	t_stack	*first;
+	t_stack	*second;
+	t_stack	*last;
+	int		b_weight;
+
+	if (!*b)
+		return (0);
+	last = *b;
+	b_weight = 0;
+	first = *b;
+	second = first->next;
+	while (second)
+	{
+		if (first->data > data && second->data < data)
+			break ;
+		first = second;
+		second = second->next;
+		b_weight++;
+	}
+	if (!second && first->data > data && data < last->data)
+		b_weight++;
+	return (b_weight);
+}
+
+void		assign_opti(int pos, t_weight **opti, t_stack **a, t_stack **b)
+{
+	t_stack	*temp;
+	int		a_size;
+	int		b_size;
+	int		b_weight;
+
+	temp = *a;
+	a_size = measure_stack(a);
+	b_size = measure_stack(b);
+	if (pos > a_size - pos)
+		(*opti)->ra = -(a_size - pos);
+	else
+		(*opti)->ra = pos;
+	while (pos)
+	{
+		temp = temp->next;
+		pos--;
+	}
+	b_weight = get_b_weight(temp->data, b);
+//	if (b_weight > b_size - b_weight)
+//		(*opti)->rb = -(b_size - b_weight);  //remove -1, find imbalance
+//	else
+		(*opti)->rb = b_weight;
+}
+
+void		get_weight(t_weight *opti, t_stack **a, t_stack **b)
+{
+	int			old_weight;
+	int			new_weight;
+	int			pos;
+	t_stack		*temp;
+
+	temp = *a;
+	pos = 0;
+	old_weight = get_a_weight(pos, a) + get_b_weight(temp->data, b);
+//	printf("aw: %d\n", get_a_weight(pos, a));
+//	printf("bw: %d\n", get_b_weight(temp->data, b));
+	assign_opti(pos, &opti, a, b);
+//	printf("opti->ra: %d\n", opti->ra);
+//	printf("opti->rb: %d\n", opti->rb);
+	while (temp)
+	{
+		new_weight = get_a_weight(pos, a) + get_b_weight(temp->data, b);
+		if (new_weight < old_weight)
+		{
+			old_weight = new_weight;
+			assign_opti(pos, &opti, a, b);
+		}	
+		temp = temp->next;
+		pos++;
+	}
+}
+
+void		sort_advanced(t_stack **a, t_stack **b)
+{
+	t_weight	opti;
+	int			min;
+
+	min = 0;
+	opti.ra = 0;
+	opti.rb = 0;
+	ft_op_pb(a, b, 1);
+	ft_op_pb(a, b, 1);
+	if ((*b)->data < (*b)->next->data)
+		ft_op_rb(a, b, 1);
+	while (*a)
+	{
+		get_weight(&opti, a, b);
+		make_moves(&opti, a, b); //avec opti rr / rrr
+	}
+	min = find_min(b) + 1;
+	min = measure_stack(b) - min;
+	while (min--)
+		ft_op_rrb(a, b, 1);
+	while (*b)
+		ft_op_pa(a, b, 1);
+}

@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_op_rb.c                                         :+:      :+:    :+:   */
+/*   check_repetition.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/07 16:23:21 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/12 17:17:08 by plogan           ###   ########.fr       */
+/*   Created: 2017/06/12 18:59:31 by plogan            #+#    #+#             */
+/*   Updated: 2017/06/12 20:04:18 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		ft_op_rb(t_stack **a, t_stack **b, int usage)
+int		check_repetition(t_stack **a)
 {
-	t_stack *temp_start;
-	t_stack *temp_end;
+	int		temp_index;
+	int		current_index;
+	t_stack *temp;
+	t_stack	*current;
 
-	(void)*a;
-	if (!*b || !(*b)->next)
-		return ;
-	temp_start = (*b)->next;
-	temp_end = *b;
-	while (temp_end->next)
-		temp_end = temp_end->next;
-	temp_end->next = *b;
-	(*b)->next = NULL;
-	*b = temp_start;
-	if (usage)
-		write(1, "rb\n", 3);
-	if (usage == 2)
-		print_stacks(a, b);
+	current_index = 1;
+	current = *a;
+	while (current)
+	{
+		temp = *a;
+		temp_index = 1;
+		while (temp->next)
+		{
+			if (current_index != temp_index && temp->data == current->data)
+				return (0);
+			temp_index++;
+			temp = temp->next;
+		}
+		current = current->next;
+		current_index++;
+	}
+	return (1);
 }

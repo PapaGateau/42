@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_op_rb.c                                         :+:      :+:    :+:   */
+/*   init_weight_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/07 16:23:21 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/12 17:17:08 by plogan           ###   ########.fr       */
+/*   Created: 2017/06/16 17:57:59 by plogan            #+#    #+#             */
+/*   Updated: 2017/06/16 18:43:51 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		ft_op_rb(t_stack **a, t_stack **b, int usage)
+void	init_weight_tab(t_weight *tab)
 {
-	t_stack *temp_start;
-	t_stack *temp_end;
-
-	(void)*a;
-	if (!*b || !(*b)->next)
-		return ;
-	temp_start = (*b)->next;
-	temp_end = *b;
-	while (temp_end->next)
-		temp_end = temp_end->next;
-	temp_end->next = *b;
-	(*b)->next = NULL;
-	*b = temp_start;
-	if (usage)
-		write(1, "rb\n", 3);
-	if (usage == 2)
-		print_stacks(a, b);
+	tab->ra = 0;
+	tab->rb = 0;
+	tab->rra = 0;
+	tab->rrb = 0;
+	tab->total = 0;
 }

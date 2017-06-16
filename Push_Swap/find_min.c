@@ -1,34 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_op_rb.c                                         :+:      :+:    :+:   */
+/*   find_min.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/07 16:23:21 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/12 17:17:08 by plogan           ###   ########.fr       */
+/*   Created: 2017/06/16 15:28:23 by plogan            #+#    #+#             */
+/*   Updated: 2017/06/16 19:34:44 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		ft_op_rb(t_stack **a, t_stack **b, int usage)
+static int	compare_data(int current, t_stack **a)
 {
-	t_stack *temp_start;
-	t_stack *temp_end;
+	t_stack *temp;
 
-	(void)*a;
-	if (!*b || !(*b)->next)
-		return ;
-	temp_start = (*b)->next;
-	temp_end = *b;
-	while (temp_end->next)
-		temp_end = temp_end->next;
-	temp_end->next = *b;
-	(*b)->next = NULL;
-	*b = temp_start;
-	if (usage)
-		write(1, "rb\n", 3);
-	if (usage == 2)
-		print_stacks(a, b);
+	temp = *a;
+	while (temp)
+	{
+		if (current > temp->data)
+			return (0);
+		temp = temp->next;
+	}
+	return (1);
+}
+
+int         find_min(t_stack **a)
+{
+	int     min;
+	t_stack *temp;
+
+	temp = *a;
+	min = 0;
+	while (temp)
+	{
+		if (compare_data(temp->data, a))
+			break ;
+		min++;
+		temp = temp->next;
+	}
+	return (min);
 }

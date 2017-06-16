@@ -6,7 +6,7 @@
 #    By: plogan <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/12 21:05:23 by plogan            #+#    #+#              #
-#    Updated: 2017/06/07 19:53:37 by plogan           ###   ########.fr        #
+#    Updated: 2017/06/12 15:20:02 by plogan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,12 +34,12 @@ PRINTF_PATH = my_printf/
 
 INC = my_printf/ft_printf.h
 
-CC = gcc
+CC = @gcc
 
 all: $(NAME)
 
 %.o: $(SRC_PATH)/%.c
-	@$(CC) $(FLAGS) -I $(INC) -c -o $@ $<
+	$(CC) $(FLAGS) -I $(INC) -c -o $@ $<
 
 $(NAME): $(OBJS)
 	@$(MAKE) -C $(PRINTF_PATH)

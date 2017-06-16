@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:09:12 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/09 14:14:34 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/12 17:16:50 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,6 @@ void		ft_op_ra(t_stack **a, t_stack **b, int usage)
 	*a = temp_start;
 	if (usage)
 		write(1, "ra\n", 3);
+	if (usage == 2)
+		print_stacks(a, b);
 }

@@ -6,7 +6,7 @@
 #    By: plogan <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/25 20:54:36 by plogan            #+#    #+#              #
-#    Updated: 2017/06/06 12:15:33 by plogan           ###   ########.fr        #
+#    Updated: 2017/06/12 15:20:51 by plogan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC_NAME = ft_conv_c.c ft_conv_cc.c ft_conv_d.c ft_conv_dd.c \
 
 OBJS = $(SRC_NAME:.c=.o)
 
-CC = gcc 
+CC = @gcc 
 
 $(NAME): $(OBJS)
 	@ar rc $(NAME) $(OBJS)
