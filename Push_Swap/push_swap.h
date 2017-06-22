@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/06 18:32:11 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/16 18:43:28 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/19 18:59:04 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct		s_op
 
 typedef struct		s_weight
 {
-	int				ra; // go negative for rra
+	int				ra;
 	int				rb;
 	int				rra;
 	int				rrb;
@@ -67,5 +67,7 @@ int					check_repetition(t_stack **a);
 int					find_min(t_stack **stack);
 void				init_weight_tab(t_weight *tab);
 void				make_moves(t_weight *opti, t_stack **a, t_stack **b);
+void				find_a_weight(t_weight *current, int pos, t_stack **a);
+void				find_b_weight(t_weight *current, int data, t_stack **b);
 
 #endif

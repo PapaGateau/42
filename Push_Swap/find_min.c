@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 15:28:23 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/16 19:34:44 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/19 18:45:09 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static int	compare_data(int current, t_stack **a)
 	return (1);
 }
 
-int         find_min(t_stack **a)
+int			find_min(t_stack **a)
 {
-	int     min;
-	t_stack *temp;
+	int		min;
+	t_stack	*temp;
 
 	temp = *a;
 	min = 0;

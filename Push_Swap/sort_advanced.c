@@ -6,52 +6,19 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 15:47:42 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/16 19:59:31 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/19 19:07:43 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		find_a_weight(t_weight *current, int pos, t_stack **a)
+void		refresh_opti(t_weight *opti, t_weight *temp_w)
 {
-	int		stack_size;
-
-	stack_size = measure_stack(a);
-	if (pos > stack_size - pos + 1)
-		current->rra = stack_size - pos + 1;
-	else
-		current->ra = pos - 1;
-}
-
-void		find_b_weight(t_weight *current, int data, t_stack **b)
-{
-	t_stack	*head;
-	t_stack *first;
-	t_stack	*second;
-	int		stack_size;
-
-	stack_size = measure_stack(b);
-	head = *b;
-	first = *b;
-	second = first->next;
-	current->rb = 1;
-	while (second)
-	{
-		if (data < first->data && data > second->data)
-			break ;
-		current->rb = current->rb + 1;
-		first = first->next;
-		second = second->next;
-	}
-	if (current->rb > stack_size - current->rb)
-	{
-		current->rrb = stack_size - current->rb;
-		current->rb = 0;
-	}
-	if (!second)
-		handle_edge(current, data, b, stack_size);
-	current->total = current->ra + current->rra + current->rb +
-		current->rrb;
+	opti->ra = temp_w->ra;
+	opti->rra = temp_w->rra;
+	opti->rb = temp_w->rb;
+	opti->rrb = temp_w->rrb;
+	opti->total = temp_w->total;
 }
 
 void		find_lowest_weight(t_weight *opti, t_stack **a, t_stack **b)
@@ -65,29 +32,47 @@ void		find_lowest_weight(t_weight *opti, t_stack **a, t_stack **b)
 	init_weight_tab(&temp_w);
 	pos = 1;
 	find_a_weight(opti, pos, a);
-	printf("ra : %d\nrra: %d\n", opti->ra, opti->rra);
 	find_b_weight(opti, temp_s->data, b);
-	printf("rb : %d\nrrb: %d\n", opti->rb, opti->rrb);
 	a_size = measure_stack(a);
 	while (temp_s)
 	{
 		find_a_weight(&temp_w, pos, a);
 		find_b_weight(&temp_w, temp_s->data, b);
 		if (temp_w.total < opti->total)
-		{
-			opti->ra = temp_w.ra;
-			opti->rra = temp_w.rra;
-			opti->rb = temp_w.rb;
-			opti->rrb = temp_w.rrb;
-			opti->total = temp_w.total;
-		}
+			refresh_opti(opti, &temp_w);
 		temp_s = temp_s->next;
 		pos++;
 	}
 }
 
+static void	fill_a(int b_size, t_stack **a, t_stack **b)
+{
+	int		min;
+
+	min = find_min(b);
+	if (b_size - min > min)
+	{
+		while (min + 1)
+		{
+			ft_op_rb(a, b, 1);
+			min--;
+		}
+	}
+	else
+	{
+		while (min < b_size - 1)
+		{
+			ft_op_rrb(a, b, 1);
+			min++;
+		}
+	}
+	while (*b)
+		ft_op_pa(a, b, 1);
+}
+
 void		sort_advanced(t_stack **a, t_stack **b)
 {
+	int			b_size;
 	int			weight;
 	t_weight	opti;
 
@@ -102,6 +87,6 @@ void		sort_advanced(t_stack **a, t_stack **b)
 		find_lowest_weight(&opti, a, b);
 		make_moves(&opti, a, b);
 	}
-	//sort b then
-	//fill a 
+	b_size = measure_stack(b);
+	fill_a(b_size, a, b);
 }

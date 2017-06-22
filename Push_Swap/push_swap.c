@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 15:27:02 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/16 14:29:35 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/19 18:28:53 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ static void	call_sort(t_stack **a, t_stack **b)
 	stack_size = measure_stack(a);
 	if (check_sort(a, b))
 		return ;
-//	if (stack_size > 7)
+	if (stack_size > 10)
 		sort_advanced(a, b);
-//	else
-//	{
-//		if (stack_size == 3 && (*a)->next->next->data < (*a)->data &&
-//				(*a)->next->next->data < (*a)->next->data &&
-//				(*a)->data > (*a)->next->data)
-//			ft_op_sa(a, b, 1);
-//		sort_select(a, b);
-//	}
+	else
+	{
+		if (stack_size == 3 && (*a)->next->next->data < (*a)->data &&
+				(*a)->next->next->data < (*a)->next->data &&
+				(*a)->data > (*a)->next->data)
+			ft_op_sa(a, b, 1);
+		sort_select(a, b);
+	}
 }
 
 static int	fill_a(t_stack **a, char *arg)

@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_stack_size.c                                   :+:      :+:    :+:   */
+/*   find_a_weight.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/08 15:36:20 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/08 17:55:49 by plogan           ###   ########.fr       */
+/*   Created: 2017/06/19 18:52:32 by plogan            #+#    #+#             */
+/*   Updated: 2017/06/19 18:55:34 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int		get_stack_size(t_stack **a)
+void	find_a_weight(t_weight *current, int pos, t_stack **a)
 {
-	int		size;
-	t_stack	*temp;
+	int	stack_size;
 
-	if (!*a)
-		return (0);	
-	size = 1;
-	temp = *a;
-	while (temp->next)
+	stack_size = measure_stack(a);
+	if (pos > stack_size - pos)
 	{
-		temp = temp->next;
-		size++;
+		current->rra = stack_size - pos + 1;
+		current->ra = 0;
 	}
-	return (size);
+	else
+	{
+		current->ra = pos - 1;
+		current->rra = 0;
+	}
 }

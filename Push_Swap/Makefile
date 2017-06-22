@@ -6,7 +6,7 @@
 #    By: plogan <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/06/12 14:59:42 by plogan            #+#    #+#              #
-#    Updated: 2017/06/16 18:17:00 by plogan           ###   ########.fr        #
+#    Updated: 2017/06/19 18:59:01 by plogan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRC_NAME = checker.c check_a.c check_b.c check_args.c check_order.c \
 		   ft_op_sa.c ft_op_sb.c ft_op_ss.c ft_stack_clear.c \
 		   measure_stack.c init_op_tab.c print_stacks.c sort_select.c \
 		   ft_stack_push_back.c check_repetition.c sort_advanced.c \
-		   find_min.c init_weight_tab.c make_moves.c
+		   find_min.c init_weight_tab.c make_moves.c find_a_weight.c \
+		   find_b_weight.c
 
 SRC_NAME2 = push_swap.c check_a.c check_b.c check_args.c check_order.c \
 		   check_sort.c ft_create_elem.c ft_op_pa.c ft_op_pb.c ft_op_ra.c \
@@ -27,7 +28,8 @@ SRC_NAME2 = push_swap.c check_a.c check_b.c check_args.c check_order.c \
 		   ft_op_sa.c ft_op_sb.c ft_op_ss.c ft_stack_clear.c \
 		   measure_stack.c init_op_tab.c print_stacks.c sort_select.c \
 		   ft_stack_push_back.c check_repetition.c sort_advanced.c \
-		   find_min.c init_weight_tab.c make_moves.c
+		   find_min.c init_weight_tab.c make_moves.c find_a_weight.c \
+		   find_b_weight.c
 
 OFILES = $(SRC_NAME:.c=.o)
 OFILES2 = $(SRC_NAME2:.c=.o)
