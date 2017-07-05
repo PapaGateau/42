@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/22 19:52:36 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/23 18:27:17 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/23 19:31:13 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int				ft_room_list_push(char *line, int type)
 {
 	t_room	*new;
 
-	if (!check_line(line))
+	if (ft_strlen(line) < 5 || !check_line(line))
 		return (0);
 	if (ft_s()->rooms == NULL)
 	{

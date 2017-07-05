@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/23 16:46:33 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/23 18:31:18 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/23 19:34:00 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int				ft_tube_list_push(char *line)
 {
 	t_tube	*new;
 
-	if (!check_line(line))
+	if (ft_strlen(line) < 4 || !check_line(line))
 		return (0);
 	if (ft_s()->tubes == NULL)
 	{

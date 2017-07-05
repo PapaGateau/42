@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/22 19:24:59 by plogan            #+#    #+#             */
-/*   Updated: 2017/06/23 18:25:09 by plogan           ###   ########.fr       */
+/*   Updated: 2017/06/23 19:39:23 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		check_room_tube(char *line, int *mode)
 	if (*mode == 2 && !ft_strchr(line, ' '))
 	{
 		if (!ft_tube_list_push(line))
-			*mode = ERROR;
+			*mode = END_PARSE;
 	}	
 	else if (*mode != ERROR)
 		*mode = END_PARSE;
