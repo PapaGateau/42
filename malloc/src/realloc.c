@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 15:42:20 by plogan            #+#    #+#             */
-/*   Updated: 2019/04/25 17:18:29 by plogan           ###   ########.fr       */
+/*   Updated: 2019/08/21 18:28:44 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,34 @@ int		check_ptr(void *ptr)
 
 void	*realloc(void *ptr, size_t size)
 {
+	void *new;
+
+	pthread_mutex_lock(&g_ft_malloc_mutex);
+	new = start_realloc(ptr, size);
+	pthread_mutex_unlock(&g_ft_malloc_mutex);
+	return (new);
+}
+
+void	*start_realloc(void *ptr, size_t size)
+{
 	void		*new;
 	t_block		*block;
 
 	block = NULL;
 	new = NULL;
 	if (!ptr)
-		return (malloc(size));
+		return (start_malloc(size));
 	if (!check_ptr(ptr))
 		return (NULL);
 	if (ptr && !size)
-		free(ptr);
+		start_free(ptr);
 	else
 	{
 		block = (t_block *)((char *)ptr - sizeof(t_block));
-		new = malloc(size);
+		new = start_malloc(size);
 		block->size < size ? mem_copy(new, ptr, block->size) :
 			mem_copy(new, ptr, size);
-		free(ptr);
+		start_free(ptr);
 	}
 	return (new);
 }

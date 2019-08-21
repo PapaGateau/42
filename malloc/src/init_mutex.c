@@ -1,22 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_str.c                                        :+:      :+:    :+:   */
+/*   init_mutex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/23 15:48:18 by plogan            #+#    #+#             */
-/*   Updated: 2019/04/23 15:48:58 by plogan           ###   ########.fr       */
+/*   Created: 2019/08/21 18:23:12 by plogan            #+#    #+#             */
+/*   Updated: 2019/08/21 18:23:25 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
 
-void	print_str(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		write(1, &str[i++], 1);
-}
+pthread_mutex_t g_ft_malloc_mutex = PTHREAD_MUTEX_INITIALIZER;

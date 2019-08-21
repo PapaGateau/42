@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:36:27 by plogan            #+#    #+#             */
-/*   Updated: 2019/04/23 15:33:35 by plogan           ###   ########.fr       */
+/*   Updated: 2019/08/21 18:29:34 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ void	check_for_merge(t_range *range)
 }
 
 void	free(void *ptr)
+{
+	pthread_mutex_lock(&g_ft_malloc_mutex);
+	start_free(ptr);
+	pthread_mutex_unlock(&g_ft_malloc_mutex);
+}
+
+void	start_free(void *ptr)
 {
 	t_range *range;
 	t_block *block;
