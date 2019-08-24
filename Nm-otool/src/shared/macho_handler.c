@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:56:44 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/23 19:44:54 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/08/24 17:55:13 by peterlogan       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void parse_symtab_command(struct symtab_command *symc, void *sym, t_file *file)
   {
     if (!check_overflow(file->file_end, symc))
       return ;
-    if (!(add_to_list(file->symbols, sym, sym_size)))
+    if (!(add_to_list(file, SYM_LIST, sym, sym_size)))
       return ;
     sym += sym_size;
   }
@@ -50,12 +50,12 @@ void parse_segment_command(void *segc, t_file *file)
     if (!check_overflow(file->file_end, section))
       return ;
     size = ((file->arch == ARCH_32) ? ((struct section *)section)->size :
-      ((struct section *)section)->size);
-    if (file->bin == OTOOL)
-      hexdump_section(file, section);//TODO
-    else if (file->bin == NM)
+      ((struct section_64 *)section)->size);
+//    if (file->bin == OTOOL)
+  //    hexdump_section(file, section);//TODO
+    if (file->bin == NM) //change to else if
     {
-      if (!(add_to_list(file->sections, section, size)))
+      if (!(add_to_list(file, SECT_LIST, section, size)))
         return ;
     }
     section += size;
@@ -85,6 +85,8 @@ void handle_macho_file(t_file *file, void *file_start)
 {
   struct load_command *lc;
   uint64_t ncmds;
+
+  ncmds = 0;
 // add endian compatibility later
   if (file->magic == MH_MAGIC)
   {

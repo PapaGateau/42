@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:31:58 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/23 19:38:25 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/08/24 15:23:18 by peterlogan       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void dispatch_file(t_file *file, void *file_start)
 {
-  if (file->magic == MH_MAGIC || file->magic == MH_CIGAM || 
+  if (file->magic == MH_MAGIC || file->magic == MH_CIGAM ||
     file->magic == MH_MAGIC_64 || file->magic == MH_CIGAM_64)
     handle_macho_file(file, file_start);
     //handle_archive();

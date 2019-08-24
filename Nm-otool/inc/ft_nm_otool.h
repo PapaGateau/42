@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 13:23:29 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/23 19:43:54 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/08/24 15:52:50 by peterlogan       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@
 
 //other headers
 
-#define SUCCESS 1
-#define FAILURE 0
+#define SECT_LIST 1
+#define SYM_LIST  2
+#define SUCCESS   1
+#define FAILURE   0
 
 typedef enum  e_bin
 {
@@ -54,7 +56,7 @@ typedef enum  e_arch
 
 typedef struct  s_file
 {
-  int       magic;
+  uint32_t  magic;
   t_bin     bin;
   char      *path;
   void      *file_start;
@@ -73,7 +75,7 @@ typedef struct  s_file
 */
 int access_file(char *path, t_bin bin);
 void handle_macho_file(t_file *file, void *file_start);
-int add_to_list(t_list *list, void *data, uint32_t size);
+int add_to_list(t_file *file, int type, void *data, uint32_t size);
 int check_overflow(void *ptr1, void *ptr2);
 void hexdump_section(t_file *file, void *section);
 
