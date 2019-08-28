@@ -6,13 +6,13 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 18:15:40 by plogan            #+#    #+#             */
-/*   Updated: 2019/08/24 17:07:48 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/08/28 13:51:27 by peterlogan       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void const *content, size_t content_size)
+t_list	*ft_lstnew(void const *content, uint64_t content_size)
 {
 	t_list *new;
 
