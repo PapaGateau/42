@@ -6,14 +6,14 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:56:44 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/28 19:29:39 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/09/04 16:05:33 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/ft_nm_otool.h"
 
 void parse_symtab_command(struct symtab_command *symc, void *sym, t_file *file,
-uint64_t i)
+uint32_t i)
 {
   void *strtab;
   void *symtab;
@@ -21,11 +21,11 @@ uint64_t i)
   t_sym *new;
 
   new = NULL;
-  strtab = file->file_start + symc->stroff;
-  symtab = file->file_start + symc->symoff;
+  strtab = file->file_start + swapif_uint32(file, symc->stroff);
+  symtab = file->file_start + swapif_uint32(file, symc->symoff);
   sym_size = ((file->arch == ARCH_32) ? sizeof(struct nlist) :
     sizeof(struct nlist_64));
-  while (i < symc->nsyms)
+  while (i < swapif_uint32(file, symc->nsyms))
   {
     if (!check_overflow(file->file_end, file->file_start, symc))
       return ;
@@ -40,15 +40,15 @@ uint64_t i)
 
 void parse_segment_command(void *segc, t_file *file)
 {
-  uint64_t nsects;
+  uint32_t nsects;
   void *section;
   uint64_t size;
   t_sect *new;
 
   section = (segc + ((file->arch == ARCH_32) ?
     sizeof(struct segment_command) : sizeof( struct segment_command_64)));
-  nsects = ((file->arch == ARCH_32) ? ((struct segment_command *)segc)->nsects :
-      ((struct segment_command_64 *)segc)->nsects);
+  nsects = swapif_uint32(file, ((file->arch == ARCH_32) ? ((struct segment_command *)segc)->nsects :
+      ((struct segment_command_64 *)segc)->nsects));
   file->nsects = nsects;
   while (nsects--)
   {
@@ -73,15 +73,15 @@ void parse_load_command(struct load_command *lc, t_file *file)
 {
   struct symtab_command *symc;
   void *sym;
-  uint64_t i;
+  uint32_t i;
+  uint32_t cmd;
 
   i = 0;
   sym = NULL;
   symc = NULL;
-  if (lc->cmd == LC_SEGMENT || lc->cmd == LC_SEGMENT_64)
-  {
+  cmd = swapif_uint32(file, lc->cmd);
+  if (cmd == LC_SEGMENT || cmd == LC_SEGMENT_64)
     parse_segment_command(lc, file);
-  }
   else if (lc->cmd == LC_SYMTAB)
   {
     symc = (struct symtab_command *)lc;
@@ -90,30 +90,28 @@ void parse_load_command(struct load_command *lc, t_file *file)
   }
 }
 
-void handle_macho_file(t_file *file, void *file_start)
+int handle_macho_file(t_file *file, void *file_start)
 {
   struct load_command *lc;
-  uint64_t ncmds;
+  uint32_t ncmds;
 
   ncmds = 0;
-// add endian compatibility later
   if (file->magic == MH_MAGIC)
   {
-    ncmds = ((struct mach_header *)file_start)->ncmds;
+    ncmds = swapif_uint32(file, ((struct mach_header *)file_start)->ncmds);
     lc = (struct load_command *)(file_start + sizeof(struct mach_header));
   }
   else if (file->magic == MH_MAGIC_64)
   {
-    ncmds = ((struct mach_header_64 *)file_start)->ncmds;
+    ncmds = swapif_uint32(file, ((struct mach_header_64 *)file_start)->ncmds);
     lc = (struct load_command *)(file_start + sizeof(struct mach_header_64));
   }
   while (ncmds--)
   {
     if (!check_overflow(file->file_end, file->file_start, (void *)lc))
-      return ;
+      return (FAILURE);
     parse_load_command(lc, file);
-    lc = (void *)lc + lc->cmdsize;
+    lc = (void *)lc + swapif_uint32(file, lc->cmdsize);
   }
-  match_symbol_types(file);
-  print_nm(file);
+  return (SUCCESS);
 }

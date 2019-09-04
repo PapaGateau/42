@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 18:03:12 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/28 19:51:09 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/09/04 16:27:43 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,65 +15,60 @@
 void *find_mysection(t_list *sect_list, uint8_t n_sect)
 {
   uint8_t i;
+  t_sect *temp;
 
-  i = 0;
+  i = 1;
   while (sect_list)
   {
+    temp = (t_sect *)(sect_list->content);
     if (i == n_sect && sect_list)
-    {
       return (sect_list->content);
-    }
     i++;
     sect_list = sect_list->next;
   }
   return (NULL);
 }
 
-char match_symbol_section(t_list *sect_list, t_sym *sym)
+void match_symbol_section(t_list *sect_list, t_sym *sym)
 {
   t_sect *sect;
-  char ret;
 
-  ret = '?';
   if ((sect = (t_sect *)find_mysection(sect_list, sym->n_sect)))
   {
     if (!ft_strcmp(sect->name, SECT_TEXT))
-      ret = 'T';
-    if (!ft_strcmp(sect->name, SECT_DATA))
-      ret = 'D';
-    if (!ft_strcmp(sect->name, SECT_BSS))
-      ret = 'B';
+      sym->type = 'T';
+    else if (!ft_strcmp(sect->name, SECT_DATA))
+    {
+      sym->type = 'D';
+    }
+    else if (!ft_strcmp(sect->name, SECT_BSS))
+      sym->type = 'B';
     else
-      ret = 'S';
+      sym->type = 'S';
     if (!(sym->n_type & N_EXT))
-      ret -= 'A' - 'a';
+      sym->type -= 'A' - 'a';
   }
-  return (ret);
 }
 
-char get_symbol_letter(t_sym *sym, t_file *file)
+void get_symbol_letter(t_sym *sym, t_file *file)
 {
   if (N_STAB & sym->n_type)
-    return ('-');
+    sym->type = '-';
   else if ((N_TYPE & sym->n_type) == N_UNDF)
   {
     if (sym->name_failed)
-      return ('C');
+      sym->type = 'C';
     else if (sym->n_type & N_EXT)
-      return ('U');
+      sym->type = 'U';
     else
-      return ('?');
+      sym->type = '?';
   }
   else if ((N_TYPE & sym->n_type) == N_SECT)
-  {
-    return (match_symbol_section(file->sections, sym));
-  }
+    match_symbol_section(file->sections, sym);
   else if ((N_TYPE & sym->n_type) == N_ABS)
-    return ('A');
+    sym->type = 'A';
   else if ((N_TYPE & sym->n_type) == N_INDR)
-    return ('I');
-  else
-    return ('?'); // change from return, to assign (char return to void return)
+    sym->type = 'I';
 }
 
 void match_symbol_types(t_file *file)
@@ -87,8 +82,7 @@ void match_symbol_types(t_file *file)
   while (sym_list)
   {
     current = (t_sym *)(sym_list->content);
-    current->type = get_symbol_letter((t_sym *)(sym_list->content),
-  file);
+    get_symbol_letter(current, file);
     sym_list = sym_list->next;
   }
 }

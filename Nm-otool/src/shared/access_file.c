@@ -6,19 +6,30 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:31:58 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/24 15:23:18 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/09/04 18:42:20 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/ft_nm_otool.h"
 
-void dispatch_file(t_file *file, void *file_start)
+int dispatch_file(t_file *file, void *file_start)
 {
-  if (file->magic == MH_MAGIC || file->magic == MH_CIGAM ||
+  if (!ft_strncmp(file_start, ARMAG, SARMAG))
+    return (handle_archive(file, file_start));
+  else if (file->magic == FAT_MAGIC || file->magic == FAT_CIGAM)
+    return (handle_fat_file(file, file_start));
+  else if (file->magic == MH_MAGIC || file->magic == MH_CIGAM ||
     file->magic == MH_MAGIC_64 || file->magic == MH_CIGAM_64)
-    handle_macho_file(file, file_start);
-    //handle_archive();
-    //handle_fat_file();
+    return (handle_macho_file(file, file_start));
+  else
+  {
+    if (file->bin == NM)
+      ft_printf("ft_nm: %s The file was not recognized as a valid object\
+ file\n\n", file->path);
+    if (file->bin == OTOOL)
+      ft_printf("ft_otool: %s is not an object file.\n");
+    return (FAILURE);
+  }
 }
 
 t_file *init_file(char *path, void *file_start, size_t len, t_bin bin)
@@ -28,14 +39,15 @@ t_file *init_file(char *path, void *file_start, size_t len, t_bin bin)
   if (!(new = (t_file *)malloc(sizeof(t_file))))
     return (NULL);
   ft_bzero(new, sizeof(t_file));
-  new->magic = *(int *)(file_start);
+  new->magic = *(uint32_t *)(file_start);
   new->bin = bin;
   if(!(new->path = strdup(path)))
     return (NULL);
   new->file_start = file_start;
   new->file_size = len;
   new->file_end = file_start + len;
-  if (new->magic == MH_CIGAM || new->magic == MH_CIGAM_64)
+  if (new->magic == MH_CIGAM || new->magic == MH_CIGAM_64 ||
+    new->magic == FAT_CIGAM)
     new->swap_bits = 1;
   if (new->magic == MH_MAGIC_64 || new->magic == MH_CIGAM_64)
     new->arch = ARCH_64;
@@ -60,7 +72,13 @@ int access_file(char *path, t_bin bin)
     return (FAILURE);
   if (!(file = init_file(path, file_start, buf.st_size, bin)))
     return (FAILURE);
-  dispatch_file(file, file_start);
+  if (!dispatch_file(file, file_start))
+    return (FAILURE);
+  if (bin == NM)
+  {
+    match_symbol_types(file);
+    print_nm(file);
+  }
   //free_file(file); TODO
   return (SUCCESS);
 }

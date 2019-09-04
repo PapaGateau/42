@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 18:18:21 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/28 19:54:58 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/09/04 17:07:26 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ t_sect *init_new_section(t_file *file, void *section)
   ft_bzero(new, sizeof(t_sect));
   if (file->arch == ARCH_32)
   {
-    if (!(new->name = strdup(((struct section *)section)->sectname)))
+    if (!(new->name = ft_strdup(((struct section *)section)->sectname)))
       return (NULL);
-    new->addr = ((struct section *)section)->addr;
-    new->size = ((struct section *)section)->size;
-    new->offset = ((struct section *)section)->offset;
+    new->addr = swapif_uint32(file, ((struct section *)section)->addr);
+    new->size = swapif_uint32(file, ((struct section *)section)->size);
+    new->offset = swapif_uint32(file, ((struct section *)section)->offset);
   }
   else if (file->arch == ARCH_64)
   {
-    if (!(new->name = strdup(((struct section_64 *)section)->sectname)))
+    if (!(new->name = ft_strdup(((struct section_64 *)section)->sectname)))
       return (NULL);
-    new->addr = ((struct section_64 *)section)->addr;
-    new->size = ((struct section_64 *)section)->size;
-    new->offset = ((struct section_64 *)section)->offset;
+    new->addr = swapif_uint64(file, ((struct section_64 *)section)->addr);
+    new->size = swapif_uint64(file, ((struct section_64 *)section)->size);
+    new->offset = swapif_uint32(file, ((struct section_64 *)section)->offset);
   }
   return (new);
 }
@@ -47,25 +47,22 @@ t_sym *init_new_symbol(t_file *file, void *symtab, void *strtab, uint64_t i)
   ft_bzero(new, sizeof(t_sym));
   if (file->arch == ARCH_32)
   {
-    if (!(new->name = strdup(strtab + ((struct nlist *)symtab + i)->n_un.n_strx)))
-      return(NULL);
+    new->name = ft_strdup(strtab +
+      swapif_uint32(file, ((struct nlist *)symtab + i)->n_un.n_strx));
     new->n_type = ((struct nlist *)symtab + i)->n_type;
     new->n_sect = ((struct nlist *)symtab + i)->n_sect;
-    new->n_value = ((struct nlist *)symtab + i)->n_value;
+    new->n_value = swapif_uint32(file, ((struct nlist *)symtab + i)->n_value);
   }
   if (file->arch == ARCH_64)
   {
-    if (!(new->name = strdup(strtab + ((struct nlist_64 *)symtab + i)->n_un.n_strx)))
-      return(NULL);
+    new->name = ft_strdup(strtab +
+      swapif_uint32(file, ((struct nlist_64 *)symtab + i)->n_un.n_strx));
     new->n_type = ((struct nlist_64 *)symtab + i)->n_type;
     new->n_sect = ((struct nlist_64 *)symtab + i)->n_sect;
-    new->n_value = ((struct nlist_64 *)symtab + i)->n_value;
-    ft_printf("%016llx %s\n", new->n_value, new->name);// here is the problem
-    //assignement isnt done properly
+    new->n_value = swapif_uint64(file, ((struct nlist_64 *)symtab + i)->n_value);
   }
   return (new);
 }
-
 
 void add_node_to_last(t_list *new, t_list *first, t_list *iter)
 {
@@ -95,14 +92,15 @@ int add_to_list(t_file *file, int type, void *data, uint64_t size)
       return ((file->sections = new) ? SUCCESS : FAILURE);
     first = file->sections;
     iter = file->sections->next;
+    add_node_to_last(new, first, iter);
   }
   if (type == SYM_LIST)
   {
     if (!file->symbols)
       return ((file->symbols = new) ? SUCCESS : FAILURE);
-    first = file->symbols;
-    iter = file->symbols->next;
+    first = file->symbols;      // MIGHT NOT BE NECESSARY HERE
+    iter = file->symbols->next; // ...
+    add_symbol_alpha(new, file, first, iter);
   }
-  add_node_to_last(new, first, iter);
   return (SUCCESS);
 }
