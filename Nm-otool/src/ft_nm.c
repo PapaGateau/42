@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:09:03 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/24 15:22:24 by peterlogan       ###   ########.fr       */
+/*   Updated: 2019/09/05 15:26:15 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,14 @@ int main(int argc, char **argv)
   i = 1;
   if (argc == 1)
   {
-    if (!access_file("a.out", bin))
+    if (!access_file("a.out", bin, false))
       return (FAILURE);
   }
   else
   {
-    while (i <= argc)
+    while (i < argc)
     {
-      if (!access_file(argv[i], bin))
-        return (FAILURE);
+      access_file(argv[i], bin, (argc > 2) ? true : false);
       i++;
     }
   }

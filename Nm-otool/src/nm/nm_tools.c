@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 18:18:21 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/04 17:07:26 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/05 18:15:35 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_sect *init_new_section(t_file *file, void *section)
   t_sect *new;
 
   if (!(new = (t_sect *)malloc(sizeof(t_sect))))
-    return (NULL);
+    return (new);
   ft_bzero(new, sizeof(t_sect));
   if (file->arch == ARCH_32)
   {
@@ -41,26 +41,29 @@ t_sect *init_new_section(t_file *file, void *section)
 t_sym *init_new_symbol(t_file *file, void *symtab, void *strtab, uint64_t i)
 {
   t_sym *new;
+  bool name_failed;
 
+  name_failed = false;
   if (!(new = (t_sym *)malloc(sizeof(t_sym))))
     return(new);
   ft_bzero(new, sizeof(t_sym));
   if (file->arch == ARCH_32)
   {
-    new->name = ft_strdup(strtab +
-      swapif_uint32(file, ((struct nlist *)symtab + i)->n_un.n_strx));
+    new->name = strdup_overflow(file, strtab + swapif_uint32(file,
+      ((struct nlist *)symtab + i)->n_un.n_strx), &name_failed);
     new->n_type = ((struct nlist *)symtab + i)->n_type;
     new->n_sect = ((struct nlist *)symtab + i)->n_sect;
     new->n_value = swapif_uint32(file, ((struct nlist *)symtab + i)->n_value);
   }
   if (file->arch == ARCH_64)
   {
-    new->name = ft_strdup(strtab +
-      swapif_uint32(file, ((struct nlist_64 *)symtab + i)->n_un.n_strx));
+    new->name = strdup_overflow(file, strtab + swapif_uint32(file,
+      ((struct nlist_64 *)symtab + i)->n_un.n_strx), &name_failed);
     new->n_type = ((struct nlist_64 *)symtab + i)->n_type;
     new->n_sect = ((struct nlist_64 *)symtab + i)->n_sect;
     new->n_value = swapif_uint64(file, ((struct nlist_64 *)symtab + i)->n_value);
   }
+  new->name_failed = name_failed;
   return (new);
 }
 

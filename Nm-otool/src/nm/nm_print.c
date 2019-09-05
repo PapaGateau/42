@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:55:42 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/04 17:46:19 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/05 19:06:24 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void print_nm(t_file *file)
   while (symbols)
   {
     symbol = (t_sym *)(symbols->content);
+    if (!symbol->type)
+      symbol->type = ' ';
     if (file->arch == ARCH_64)
     {
       if (symbol->type == 'U')

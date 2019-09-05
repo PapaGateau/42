@@ -6,9 +6,11 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 18:26:05 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/04 18:34:01 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/05 13:27:17 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../inc/ft_nm_otool.h"
 
 static t_arch_flag g_arch_flags[] = {
     { "any",	CPU_TYPE_ANY,	  CPU_SUBTYPE_MULTIPLE },
@@ -26,7 +28,6 @@ static t_arch_flag g_arch_flags[] = {
     { "sparc",	CPU_TYPE_SPARC,   CPU_SUBTYPE_SPARC_ALL },
     { "m88k",   CPU_TYPE_MC88000, CPU_SUBTYPE_MC88000_ALL },
     { "i860",   CPU_TYPE_I860,    CPU_SUBTYPE_I860_ALL },
-    { "veo",    CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_ALL },
     { "arm",    CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_ALL },
     { "ppc601", CPU_TYPE_POWERPC, CPU_SUBTYPE_POWERPC_601 },
     { "ppc603", CPU_TYPE_POWERPC, CPU_SUBTYPE_POWERPC_603 },
@@ -50,10 +51,6 @@ static t_arch_flag g_arch_flags[] = {
     { "m68030", CPU_TYPE_MC680x0, CPU_SUBTYPE_MC68030_ONLY },
     { "m68040", CPU_TYPE_MC680x0, CPU_SUBTYPE_MC68040 },
     { "hppa7100LC", CPU_TYPE_HPPA,  CPU_SUBTYPE_HPPA_7100LC },
-    { "veo1",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_1 },
-    { "veo2",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_2 },
-    { "veo3",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_3 },
-    { "veo4",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_4 },
     { "armv4t", CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_V4T},
     { "armv5",  CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_V5TEJ},
     { "xscale", CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_XSCALE},
@@ -68,3 +65,32 @@ static t_arch_flag g_arch_flags[] = {
     { "arm64v8",CPU_TYPE_ARM64,   CPU_SUBTYPE_ARM64_V8 },
     { NULL,	0,		  0 }
 };
+
+int match_cpu_type(struct fat_arch *fat_arch, t_file *file)
+{
+  cpu_type_t cputype;
+
+  cputype = swapif_int32(file, fat_arch->cputype);
+  if (cputype == MY_CPU_TYPE)
+    return (SUCCESS);
+  return (FAILURE);
+}
+
+char *get_arch_name(struct fat_arch *fat_arch, t_file *file)
+{
+  int i;
+  cpu_type_t cputype;
+  cpu_subtype_t cpusubtype;
+
+  cputype = swapif_int32(file, fat_arch->cputype);
+  cpusubtype = swapif_int32(file, fat_arch->cpusubtype);
+  i = 0;
+  while (g_arch_flags[i].name)
+  {
+    if (cputype == g_arch_flags[i].cputype &&
+      cpusubtype == g_arch_flags[i].cpusubtype)
+      return (g_arch_flags[i].name);
+    i++;
+  }
+  return (NULL);
+}

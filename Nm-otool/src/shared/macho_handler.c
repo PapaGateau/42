@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:56:44 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/04 16:05:33 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/05 19:32:47 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ uint32_t i)
     sizeof(struct nlist_64));
   while (i < swapif_uint32(file, symc->nsyms))
   {
-    if (!check_overflow(file->file_end, file->file_start, symc))
+    if (!check_overflow(file, strtab) || !check_overflow(file, symtab))
       return ;
     if (!(new = init_new_symbol(file, symtab, strtab, i)))
       return ;
@@ -49,10 +49,9 @@ void parse_segment_command(void *segc, t_file *file)
     sizeof(struct segment_command) : sizeof( struct segment_command_64)));
   nsects = swapif_uint32(file, ((file->arch == ARCH_32) ? ((struct segment_command *)segc)->nsects :
       ((struct segment_command_64 *)segc)->nsects));
-  file->nsects = nsects;
   while (nsects--)
   {
-    if (!check_overflow(file->file_end, file->file_start, section))
+    if (!check_overflow(file, section))
       return ;
     size = ((file->arch == ARCH_32) ? sizeof((struct section *)section) :
       sizeof((struct section_64 *)section));
@@ -65,7 +64,8 @@ void parse_segment_command(void *segc, t_file *file)
       if (!(add_to_list(file, SECT_LIST, (void *)new, sizeof(t_sect))))
         return ;
     }
-    section += size;
+    section += (file->arch == ARCH_32 ? sizeof(struct section) :
+      sizeof(struct section_64));
   }
 }
 
@@ -80,12 +80,15 @@ void parse_load_command(struct load_command *lc, t_file *file)
   sym = NULL;
   symc = NULL;
   cmd = swapif_uint32(file, lc->cmd);
+
   if (cmd == LC_SEGMENT || cmd == LC_SEGMENT_64)
     parse_segment_command(lc, file);
   else if (lc->cmd == LC_SYMTAB)
   {
     symc = (struct symtab_command *)lc;
     sym = (void *)file->file_start + symc->symoff;
+    if (!check_overflow(file, sym))
+      return ;
     parse_symtab_command(symc, sym, file, i);
   }
 }
@@ -96,19 +99,19 @@ int handle_macho_file(t_file *file, void *file_start)
   uint32_t ncmds;
 
   ncmds = 0;
-  if (file->magic == MH_MAGIC)
+  if (file->magic == MH_MAGIC || file->magic == MH_CIGAM)
   {
     ncmds = swapif_uint32(file, ((struct mach_header *)file_start)->ncmds);
     lc = (struct load_command *)(file_start + sizeof(struct mach_header));
   }
-  else if (file->magic == MH_MAGIC_64)
+  else if (file->magic == MH_MAGIC_64 || file->magic == MH_CIGAM_64)
   {
     ncmds = swapif_uint32(file, ((struct mach_header_64 *)file_start)->ncmds);
     lc = (struct load_command *)(file_start + sizeof(struct mach_header_64));
   }
   while (ncmds--)
   {
-    if (!check_overflow(file->file_end, file->file_start, (void *)lc))
+    if (!check_overflow(file, (void *)lc))
       return (FAILURE);
     parse_load_command(lc, file);
     lc = (void *)lc + swapif_uint32(file, lc->cmdsize);

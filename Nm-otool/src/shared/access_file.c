@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:31:58 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/04 18:42:20 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/05 19:09:19 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int dispatch_file(t_file *file, void *file_start)
  file\n\n", file->path);
     if (file->bin == OTOOL)
       ft_printf("ft_otool: %s is not an object file.\n");
+    //free file
     return (FAILURE);
   }
 }
@@ -54,7 +55,7 @@ t_file *init_file(char *path, void *file_start, size_t len, t_bin bin)
   return (new);
 }
 
-int access_file(char *path, t_bin bin)
+int access_file(char *path, t_bin bin, bool args)
 {
   t_file *file;
   int fd;
@@ -62,7 +63,11 @@ int access_file(char *path, t_bin bin)
   struct stat buf;
 
   if ((fd = open(path, O_RDONLY)) < 0)
-    return (FAILURE); //print path + no such file
+  {
+    ft_printf("%s: %s: No such file or directory.\n",
+      (bin == NM) ? "ft_nm" : "ft_otool", path);
+    return (FAILURE);
+  }
   if (fstat(fd, &buf) < 0)
     return (FAILURE);
   if (buf.st_size == 0)
@@ -74,11 +79,9 @@ int access_file(char *path, t_bin bin)
     return (FAILURE);
   if (!dispatch_file(file, file_start))
     return (FAILURE);
-  if (bin == NM)
-  {
-    match_symbol_types(file);
-    print_nm(file);
-  }
+  if (args)
+    ft_printf("\n%s:\n", path);
+  dispatch_print(file, bin);
   //free_file(file); TODO
   return (SUCCESS);
 }

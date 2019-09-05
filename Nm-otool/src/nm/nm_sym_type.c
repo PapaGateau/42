@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 18:03:12 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/04 16:27:43 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/05 18:16:00 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ void *find_mysection(t_list *sect_list, uint8_t n_sect)
 {
   uint8_t i;
   t_sect *temp;
+  char *name;//remove
 
   i = 1;
   while (sect_list)
   {
     temp = (t_sect *)(sect_list->content);
+    name = temp->name;
     if (i == n_sect && sect_list)
       return (sect_list->content);
     i++;
