@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:31:58 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/05 19:09:19 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/06 17:55:51 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int dispatch_file(t_file *file, void *file_start)
  file\n\n", file->path);
     if (file->bin == OTOOL)
       ft_printf("ft_otool: %s is not an object file.\n");
-    //free file
+    free_structs (file);
     return (FAILURE);
   }
 }
@@ -78,10 +78,12 @@ int access_file(char *path, t_bin bin, bool args)
   if (!(file = init_file(path, file_start, buf.st_size, bin)))
     return (FAILURE);
   if (!dispatch_file(file, file_start))
-    return (FAILURE);
+    return (free_and_fail(file));
   if (args)
     ft_printf("\n%s:\n", path);
   dispatch_print(file, bin);
-  //free_file(file); TODO
+  if (munmap(file_start, file->file_size) < 0 || close(fd) < 0)
+    return (free_and_fail(file));
+  free_structs(file);
   return (SUCCESS);
 }

@@ -6,13 +6,14 @@
 #    By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/24 13:10:03 by peterlog          #+#    #+#              #
-#    Updated: 2019/09/05 19:02:49 by plogan           ###   ########.fr        #
+#    Updated: 2019/09/06 17:32:32 by plogan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = nm/nm_tools.c otool/hexdump.c shared/access_file.c shared/macho_handler.c
 SRC += shared/utils.c nm/nm_sym_type.c nm/nm_print.c shared/archive_handler.c
 SRC += shared/fat_handler.c nm/nm_tools2.c shared/cpu_tools.c shared/dispatch.c
+SRC += shared/free_structs.c
 SRC_NM = ft_nm.c $(SRC)
 SRC_OTOOL = $(SRC)
 

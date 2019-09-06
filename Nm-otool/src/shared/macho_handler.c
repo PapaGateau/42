@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:56:44 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/05 19:32:47 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/06 16:29:57 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ void parse_load_command(struct load_command *lc, t_file *file)
 
   if (cmd == LC_SEGMENT || cmd == LC_SEGMENT_64)
     parse_segment_command(lc, file);
-  else if (lc->cmd == LC_SYMTAB)
+  else if (cmd == LC_SYMTAB)
   {
     symc = (struct symtab_command *)lc;
-    sym = (void *)file->file_start + symc->symoff;
+    sym = (void *)file->file_start + swapif_uint32(file, symc->symoff);
     if (!check_overflow(file, sym))
       return ;
     parse_symtab_command(symc, sym, file, i);

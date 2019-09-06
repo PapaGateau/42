@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 13:14:28 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/05 19:01:13 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/06 17:57:26 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int process_fat_archive(t_file *file, struct fat_arch *fat_arch, bool print_all)
     file->bin)))
     return (FAILURE);
   if (!dispatch_file(new_file, new_file->file_start))
-    return (FAILURE);
+    return (free_and_fail(new_file));
   dispatch_print(new_file, file->bin);
-  //free_file
+  free_structs(new_file);
   return (SUCCESS);
 }
 

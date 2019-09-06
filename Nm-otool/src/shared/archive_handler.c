@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 12:04:53 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/05 16:03:11 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/06 17:57:16 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int process_archive(t_file *file, struct ar_hdr *ar_header, uint64_t ar_size)
     ft_printf("\n");
   ft_printf("%s(%s):\n", new_file->path, ptr);
   if (!dispatch_file(new_file, new_file->file_start))
-    return (FAILURE);
+    return (free_and_fail(new_file));
   dispatch_print(new_file, file->bin);
-  //free file
+  free_structs(new_file);
   return (SUCCESS);
 }
 

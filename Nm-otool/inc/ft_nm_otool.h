@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 13:23:29 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/05 18:29:55 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/06 17:56:01 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int handle_macho_file(t_file *file, void *file_start);
 int handle_archive(t_file *file, void *file_start);
 int handle_fat_file(t_file *file, void *file_start);
 
+void free_structs(t_file *file);
+int free_and_fail(t_file *);
 void dispatch_print(t_file *file, t_bin bin);
 char *get_arch_name(struct fat_arch *fat_arch, t_file *file);
 int match_cpu_type(struct fat_arch *fat_arch, t_file *file);
