@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 13:14:28 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/06 17:57:26 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/12 17:27:53 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int process_fat_archive(t_file *file, struct fat_arch *fat_arch, bool print_all)
   uint32_t offset;
   uint32_t size;
 
+  file->print_path = false;
   arch_name = get_arch_name(fat_arch, file);
   if (print_all && file->bin == NM)
     ft_printf("\n%s (for architecture %s):\n", file->path, arch_name);
@@ -31,7 +32,7 @@ int process_fat_archive(t_file *file, struct fat_arch *fat_arch, bool print_all)
     return (FAILURE);
   if (!dispatch_file(new_file, new_file->file_start))
     return (free_and_fail(new_file));
-  dispatch_print(new_file, file->bin);
+  dispatch_print_nm(new_file, file->bin, false);
   free_structs(new_file);
   return (SUCCESS);
 }

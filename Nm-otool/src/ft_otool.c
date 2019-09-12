@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_nm.c                                            :+:      :+:    :+:   */
+/*   ft_otool.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/23 13:09:03 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/12 15:31:39 by plogan           ###   ########.fr       */
+/*   Created: 2019/09/12 15:26:34 by plogan            #+#    #+#             */
+/*   Updated: 2019/09/12 17:02:35 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@ int main(int argc, char **argv)
   t_bin bin;
   int i;
 
-  bin = NM;
+  bin = OTOOL;
   i = 1;
   if (argc == 1)
   {
-    if (!access_file("a.out", bin, false))
-      return (FAILURE);
+    ft_printf("error: ft_otool: at least one file must be specified\n");
+    ft_printf("Usage: ft_otool <object_file> ...\n");
+    return (FAILURE); ;
   }
   else
   {
     while (i < argc)
     {
-      access_file(argv[i], bin, (argc > 2) ? true : false);
+      if (!access_file(argv[i], bin, (argc > 2) ? true : false))
+        return (FAILURE);
       i++;
     }
   }

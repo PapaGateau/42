@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hexdump.c                                          :+:      :+:    :+:   */
+/*   dispatch.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/23 19:42:23 by peterlog          #+#    #+#             */
-/*   Updated: 2019/08/24 15:16:42 by peterlogan       ###   ########.fr       */
+/*   Created: 2019/09/05 19:02:26 by plogan            #+#    #+#             */
+/*   Updated: 2019/09/12 17:28:26 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/ft_nm_otool.h"
 
-void hexdump_section(t_file *file, void *section)
+void dispatch_print_nm(t_file *file, t_bin bin, bool args)
 {
-  void *delete_me;
-  t_file *remove_me;
-
-  remove_me = file;
-  remove_me++;
-  delete_me = section;
-  delete_me++;
-  return ;
+  if (bin == NM)
+  {
+    if (file->print_path == true && args == true)
+      ft_printf("\n%s:\n", file->path);
+    match_symbol_types(file);
+    print_nm(file);
+  }
 }

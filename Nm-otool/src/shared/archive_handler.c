@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 12:04:53 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/06 17:57:16 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/12 17:28:04 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int process_archive(t_file *file, struct ar_hdr *ar_header, uint64_t ar_size)
   int ret;
 
   ret = 0;
+  file->print_path = false;
   ptr = (void *)ar_header + sizeof(struct ar_hdr);
   if (!ft_strncmp(ar_header->ar_name, AR_EFMT1, ft_strlen(AR_EFMT1)))
     name_size = ft_atoi(ar_header->ar_name + ft_strlen(AR_EFMT1));
@@ -35,7 +36,7 @@ int process_archive(t_file *file, struct ar_hdr *ar_header, uint64_t ar_size)
   ft_printf("%s(%s):\n", new_file->path, ptr);
   if (!dispatch_file(new_file, new_file->file_start))
     return (free_and_fail(new_file));
-  dispatch_print(new_file, file->bin);
+  dispatch_print_nm(new_file, file->bin, false);
   free_structs(new_file);
   return (SUCCESS);
 }
