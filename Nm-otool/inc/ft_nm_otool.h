@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 13:23:29 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/12 17:31:00 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 15:48:14 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int handle_macho_file(t_file *file, void *file_start);
 int handle_archive(t_file *file, void *file_start);
 int handle_fat_file(t_file *file, void *file_start);
 
-void process_otool(t_file *file, void *section);
+void process_otool(t_file *file, t_sect *section);
 
 void free_structs(t_file *file);
 int free_and_fail(t_file *);

@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 17:05:07 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/06 17:21:15 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 17:08:51 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int eol;
 i = 0;
 size = 0;
 eol = 0;
+
 while (s1[size] && s1[size] != '\n')
 {
   size++;
@@ -50,10 +51,10 @@ char *strdup_overflow(t_file *file, char *str, bool *name_failed)
   eol = 0;
   size = 0;
   i = 0;
+
   while (((void *)str + size) > file->file_end && ((void *)str + size) < file->file_start &&
     ft_isprint(str[size]) && str[size] && str[size] != '\n')
   {
-
     size++;
     if (str[size] == '\n')
       eol = 1;

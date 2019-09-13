@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 18:38:03 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/05 16:00:59 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 15:40:28 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int check_overflow(t_file *file, void *ptr)
   end = file->file_end;
   if (ptr + 1 > end || ptr < start)
   {
-    ft_printf("ft_nm: %s truncated or malformed file\n", file->path);
+    ft_printf("ft_%s: %s truncated or malformed file\n", (file->bin == NM) ?
+    "nm" : "otool", file->path);
     return (FAILURE);
   }
   return (SUCCESS);

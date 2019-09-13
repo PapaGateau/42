@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:56:44 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/12 17:33:10 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 17:13:38 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,16 @@ void parse_segment_command(void *segc, t_file *file)
     sizeof(struct segment_command) : sizeof( struct segment_command_64)));
   nsects = swapif_uint32(file, ((file->arch == ARCH_32) ? ((struct segment_command *)segc)->nsects :
       ((struct segment_command_64 *)segc)->nsects));
-  while (nsects--)
+  while (nsects-- && check_overflow(file, section))
   {
-    if (!check_overflow(file, section))
-      return ;
     size = ((file->arch == ARCH_32) ? sizeof((struct section *)section) :
       sizeof((struct section_64 *)section));
-    if (file->bin == NM)
-    {
-      if (!(new = init_new_section(file, section)))
-        return ;
-      if (!(add_to_list(file, SECT_LIST, (void *)new, sizeof(t_sect))))
-        return ;
-    }
+    if (!(new = init_new_section(file, section)))
+      return ;
+    if (!(add_to_list(file, SECT_LIST, (void *)new, sizeof(t_sect))))
+      return ;
     else if (file->bin == OTOOL)
-      process_otool(file, section);
+      process_otool(file, new);
     section += (file->arch == ARCH_32 ? sizeof(struct section) :
       sizeof(struct section_64));
   }
@@ -99,7 +94,6 @@ int handle_macho_file(t_file *file, void *file_start)
   uint32_t ncmds;
 
   ncmds = 0;
-  file->print_path = true;
   if (file->magic == MH_MAGIC || file->magic == MH_CIGAM)
   {
     ncmds = swapif_uint32(file, ((struct mach_header *)file_start)->ncmds);

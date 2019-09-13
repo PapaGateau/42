@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 13:14:28 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/12 17:27:53 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 17:11:32 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int process_fat_archive(t_file *file, struct fat_arch *fat_arch, bool print_all)
     ft_printf("\n%s (for architecture %s):\n", file->path, arch_name);
   offset = swapif_uint32(file, fat_arch->offset);
   size = swapif_uint32(file, fat_arch->size);
-  if (!check_overflow(file, file->file_start + offset))
+  if (!check_overflow(file, file->file_start + offset + size - 1))
     return (FAILURE);
   if (!(new_file = init_file(file->path, file->file_start + offset, size,
     file->bin)))

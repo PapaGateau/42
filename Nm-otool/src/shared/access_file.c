@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 13:31:58 by peterlog          #+#    #+#             */
-/*   Updated: 2019/09/12 17:41:13 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 15:30:59 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_file *init_file(char *path, void *file_start, size_t len, t_bin bin)
     new->swap_bits = 1;
   if (new->magic == MH_MAGIC_64 || new->magic == MH_CIGAM_64)
     new->arch = ARCH_64;
+  new->print_path = true;
   return (new);
 }
 

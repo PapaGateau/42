@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 12:04:53 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/12 17:28:04 by plogan           ###   ########.fr       */
+/*   Updated: 2019/09/13 15:28:45 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ int process_archive(t_file *file, struct ar_hdr *ar_header, uint64_t ar_size)
   if (!(new_file = init_file(file->path, ptr + name_size, ar_size -
     sizeof(ar_header), file->bin)))
     return (FAILURE);
-  if (file->bin == NM)
-    ft_printf("\n");
-  ft_printf("%s(%s):\n", new_file->path, ptr);
+  new_file->print_path = false;
+  ft_printf("%s%s(%s):\n", (file->bin == NM) ? "\n" : "", new_file->path, ptr);
   if (!dispatch_file(new_file, new_file->file_start))
     return (free_and_fail(new_file));
   dispatch_print_nm(new_file, file->bin, false);
@@ -51,7 +50,7 @@ int handle_archive(t_file *file, void *file_start)
   i = 0;
   ptr = file_start + SARMAG;
   if (file->bin == OTOOL)
-    ft_printf("ar : %s\n", file->path);
+    ft_printf("Archive : %s\n", file->path);
   while (ptr < file->file_end)
   {
     ar_header = ptr;
