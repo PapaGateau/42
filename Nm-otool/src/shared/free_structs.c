@@ -6,44 +6,42 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 17:31:38 by plogan            #+#    #+#             */
-/*   Updated: 2019/09/06 17:56:13 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/10 19:57:21 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/ft_nm_otool.h"
 
-int free_and_fail(t_file *file)
+int		free_and_fail(t_file *file)
 {
-  free_structs(file);
-  return (FAILURE);
+	free_structs(file);
+	return (FAILURE);
 }
 
-void free_sym_name(void *content, size_t size)
+void	free_list(t_list *start)
 {
-  t_sym *sym;
+	t_list *iter;
 
-  sym = content;
-  if(sym->name)
-    free(sym->name);
-  sym->name = NULL;
-  free(content);
-  (void)size;
+	while (1)
+	{
+		iter = start->next;
+		if (start->content)
+			free(start->content);
+		free(start);
+		start = iter;
+		if (!start)
+			break ;
+	}
 }
 
-void free_sect(void *content, size_t size)
+void	free_structs(t_file *file)
 {
-  free(content);
-  (void)size;
-}
-
-void free_structs(t_file *file)
-{
-  if (file->path)
-    free(file->path);
-  if (file->sections)
-    ft_lstdel(&file->sections, &free_sect);
-  if (file->symbols)
-    ft_lstdel(&file->symbols, &free_sym_name);
-  free(file);
-(void)file;
+	if (file->path)
+		free(file->path);
+	if (file->symbols)
+		free_list(file->symbols);
+	if (file->sections)
+		free_list(file->sections);
+	free(file);
+	(void)file;
 }
