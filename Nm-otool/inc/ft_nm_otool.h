@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 13:23:29 by peterlog          #+#    #+#             */
-/*   Updated: 2019/10/10 19:35:27 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/17 11:38:53 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void					add_symbol_alpha(t_list *new,
 						t_file *file, t_list *first, t_list *second);
 int						check_overflow(t_file *file, void *ptr);
 char					*strdup_overflow(t_file *file, char *str,
-				bool *name_failed);
+				bool *name_failed, uint8_t type);
 t_sym					*init_new_symbol(t_file *file,
 				void *symtab, void *strtab, uint64_t i);
 t_sect					*init_new_section(t_file *file, void *section);

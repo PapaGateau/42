@@ -6,7 +6,7 @@
 /*   By: plogan <plogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 17:05:07 by plogan            #+#    #+#             */
-/*   Updated: 2019/10/10 19:24:39 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/17 11:47:59 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,21 @@ char	*strdup_eol(const char *s1)
 	return (dup);
 }
 
-char	*strdup_overflow(t_file *file, char *str, bool *name_failed)
+char	*strdup_indr(const char *str)
+{
+	char	*name;
+	char	*half_str;
+	char	*full_str;
+
+	name = strdup_eol(str);
+	half_str = ft_strjoin(name, " (indirect for ");
+	full_str = ft_strjoin(half_str, name);
+	free(name);
+	free(half_str);
+	return (full_str);
+}
+
+char	*strdup_overflow(t_file *file, char *str, bool *name_failed, uint8_t type)
 {
 	size_t	size;
 	size_t	i;
@@ -63,7 +77,7 @@ char	*strdup_overflow(t_file *file, char *str, bool *name_failed)
 		*name_failed = true;
 		return (ft_strdup("bad string index"));
 	}
-	return (strdup_eol(str));
+	return ((N_TYPE & type) == N_INDR ? strdup_indr(str) : strdup_eol(str));
 }
 
 void	add_symbol_alpha(t_list *new, t_file *file, t_list *first,

@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 18:18:21 by peterlog          #+#    #+#             */
-/*   Updated: 2019/10/10 19:21:15 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/17 11:15:37 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@ t_sym	*init_new_symbol(t_file *file, void *symtab, void *strtab, uint64_t i)
 	ft_bzero(new, sizeof(t_sym));
 	if (file->arch == ARCH_32)
 	{
-		new->name = strdup_overflow(file, strtab + swapif_uint32(file,
-					((t_nlist *)symtab + i)->n_un.n_strx), &name_failed);
 		new->n_type = ((t_nlist *)symtab + i)->n_type;
+		new->name = strdup_overflow(file, strtab + swapif_uint32(file,
+					((t_nlist *)symtab + i)->n_un.n_strx), &name_failed, new->n_type);
 		new->n_sect = ((t_nlist *)symtab + i)->n_sect;
 		new->n_value = swapif_uint32(file, ((t_nlist *)symtab + i)->n_value);
 	}
 	if (file->arch == ARCH_64)
 	{
-		new->name = strdup_overflow(file, strtab + swapif_uint32(file,
-					((t_nlist64 *)symtab + i)->n_un.n_strx), &name_failed);
 		new->n_type = ((t_nlist64 *)symtab + i)->n_type;
+		new->name = strdup_overflow(file, strtab + swapif_uint32(file,
+					((t_nlist64 *)symtab + i)->n_un.n_strx), &name_failed, new->n_type);
 		new->n_sect = ((t_nlist64 *)symtab + i)->n_sect;
 		new->n_value = swapif_uint64(file, ((t_nlist64 *)symtab + i)->n_value);
 	}

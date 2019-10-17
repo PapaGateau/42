@@ -6,7 +6,7 @@
 /*   By: peterlog <peterlog@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:55:42 by peterlog          #+#    #+#             */
-/*   Updated: 2019/10/10 19:05:24 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/17 11:55:10 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	print_arch_64(t_sym *symbol)
 	if (symbol->type == 'U')
 		ft_printf("                 %c %s\n", symbol->type,
 				symbol->name);
+	else if (symbol->type == 'I')
+		ft_printf("                 %c %s)\n", symbol->type,
+				symbol->name);
 	else if (symbol->type != '-')
 		ft_printf("%016llx %c %s\n", symbol->n_value, symbol->type,
 				symbol->name);
@@ -33,6 +36,8 @@ void	print_arch_32(t_sym *symbol)
 {
 	if (symbol->type == 'U')
 		ft_printf("         %c %s\n", symbol->type, symbol->name);
+	else if (symbol->type == 'I')
+		ft_printf("         %c %s)\n", symbol->type, symbol->name);
 	else if (symbol->type != '-')
 		ft_printf("%08llx %c %s\n", symbol->n_value, symbol->type,
 						symbol->name);
