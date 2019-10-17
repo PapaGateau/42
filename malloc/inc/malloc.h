@@ -41,6 +41,7 @@ typedef enum			e_range_type
 
 typedef struct			s_block
 {
+	char			padding[4];
 	t_bool				freed;
 	size_t				size;
 	struct s_block		*next;
@@ -48,6 +49,7 @@ typedef struct			s_block
 
 typedef struct			s_range
 {
+	char			padding[4];
 	enum e_range_type	type;
 	size_t				space;
 	struct s_range		*next;

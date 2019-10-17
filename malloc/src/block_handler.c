@@ -23,9 +23,9 @@ t_range		*make_new_range(int type, size_t range_size, t_range *next)
 {
 	t_range *new;
 
-	if (!(new = (t_range *)mmap(0, range_size, PROT_READ | PROT_WRITE,
-					MAP_ANON | MAP_PRIVATE, -1, 0)))
-		return (new);
+	if ((new = (t_range *)mmap(0, range_size, PROT_READ | PROT_WRITE,
+					MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+		return (NULL);
 	new->type = type;
 	new->space = range_size - sizeof(t_range);
 	new->next = next;
