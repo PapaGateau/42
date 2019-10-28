@@ -72,8 +72,8 @@ void	*start_realloc(void *ptr, size_t size)
 		return (start_malloc(size));
 	if (!size && ptr)
 	{
-		free(ptr);
-		return (malloc(16));
+		start_free(ptr);
+		return (start_malloc(16));
 	}
 	if (!check_ptr(ptr))
 		return (NULL);

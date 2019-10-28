@@ -28,6 +28,7 @@ void	*start_calloc(size_t count, size_t size)
 	void	*ptr;
 	t_block *block;
 
+	size = (size + 15) & ~15;
 	block = NULL;
 	if (size == 0)
 		malloc_size = count * 32;
