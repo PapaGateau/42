@@ -10,13 +10,47 @@
 ;                                                                              ;
 ; **************************************************************************** ;
 
-global _ft_puts
+%define SYSCALL_WRITE 0x2000004
+%define STDOUT 1
 
+global _ft_puts
 extern _ft_strlen
 
+section .data
+nl:
+  db 0x0a
+NULL_MSG:
+  db "(null)"
+
+section .text
 _ft_puts:
  test rdi, rdi
- jz return_error
+ jz print_null
 
-return_error:
-  mov rax, ''
+print_str:
+  push rdi
+  call _ft_strlen
+  mov rdx, rax
+  pop rsi
+  mov rax, SYSCALL_WRITE
+  mov rdi, STDOUT
+  syscall
+
+print_nl:
+  mov rax, SYSCALL_WRITE
+  lea rsi, [rel nl] ; rel? need explanation
+  mov rdi, STDOUT
+  mov rdx, 1
+  syscall
+
+return:
+  ret
+
+print_null:
+  mov rax, SYSCALL_WRITE
+  lea rsi, [rel NULL_MSG]
+  mov rdi, STDOUT
+  mov rdx, 6
+  syscall
+  jmp print_nl
+  ret

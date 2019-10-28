@@ -15,7 +15,7 @@ global _ft_strlen
 _ft_strlen:
   xor rcx, rcx
   mov rcx, -1 ; since rcx is unsigned, this sets it to MAX
-  mov al, '\0'
+  mov al, 0
   test rdi, rdi
   jz return
 

@@ -12,31 +12,29 @@
 
 global _ft_strcat
 
+section .text
+
 _ft_strcat:
-  xor rcx, rcx
-  test rdi, rdi
-  jz return
-  test rsi, rsi
-  jz return
+
+  mov rax, rdi
 
 find_s1_end:
-  mov al, byte[rdi + rcx]
-  test al, al
+  mov dl, byte[rdi]
+  test dl, dl
   jz copy_s2
-  inc rcx
+  inc rdi
   jmp find_s1_end
 
 copy_s2:
-  xor r10, r10
-  mov al, byte[rsi + r10]
-  test al, al
+  mov dl, byte[rsi]
+  test dl, dl
   jz return
-  move byte[rdi + rcx], al
-  inc rcx
-  inc r10
+  mov dl, byte[rsi]
+  mov byte[rdi], dl
+  inc rsi
+  inc rdi
   jmp copy_s2
 
 return:
-  mov byte[rdi + rcx], '\0'
-  mov rax, rdi
+  mov byte[rdi], 0
   ret

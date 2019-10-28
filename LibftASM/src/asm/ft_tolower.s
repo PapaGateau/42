@@ -20,3 +20,6 @@ _ft_tolower:
   mov rax, rdi
   jz return
   add rax, 32
+
+return:
+  ret
