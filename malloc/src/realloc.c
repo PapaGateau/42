@@ -68,7 +68,6 @@ void	*start_realloc(void *ptr, size_t size)
 
 	block = NULL;
 	new = NULL;
-	size = (size + 15) & ~15;
 	if (!ptr)
 		return (start_malloc(size));
 	if (!size && ptr)

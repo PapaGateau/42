@@ -29,8 +29,7 @@ void		*start_malloc(size_t size)
 
 	getrlimit(RLIMIT_DATA, &rlp);
 	size = (size + 15) & ~15;
-	if (size == 0 || (size + sizeof(t_range) + sizeof(t_block)) < size ||
-			(rlp.rlim_cur - sizeof(t_range) - sizeof(t_block)) < size)
+	if ((rlp.rlim_cur - sizeof(t_range) - sizeof(t_block)) < size)
 		return (NULL);
 	if (size <= TINY_MAX_BLOCK_SIZE)
 		block = block_handler(size, TINY, TINY_RANGE_SIZE);

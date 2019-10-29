@@ -23,7 +23,7 @@ PATH_SRC	= src
 PATH_INC	= inc
 
 NAME		= libft_malloc_$(HOSTTYPE).so
-CFLAGS		= -Wall -Wextra -Werror -Wpadded 
+CFLAGS		= -Wall -Wextra -Werror -Wpadded
 DLFLAGS		= -shared -fPIC
 OBJECTS		= $(patsubst %.c, $(PATH_OBJ)/%.o, $(SRCS))
 
