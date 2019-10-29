@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 14:18:37 by plogan            #+#    #+#             */
-/*   Updated: 2019/10/29 12:09:22 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/29 14:40:43 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum			e_range_type
 
 typedef struct			s_block
 {
-	char			padding[12];
+	char				padding[12];
 	t_bool				freed;
 	size_t				size;
 	struct s_block		*next;
@@ -49,7 +49,7 @@ typedef struct			s_block
 
 typedef struct			s_range
 {
-	char			padding[12];
+	char				padding[12];
 	enum e_range_type	type;
 	size_t				space;
 	struct s_range		*next;
