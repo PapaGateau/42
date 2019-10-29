@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 18:51:30 by plogan            #+#    #+#             */
-/*   Updated: 2019/08/21 18:30:07 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/29 15:35:49 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		*start_malloc(size_t size)
 {
 	struct rlimit	rlp;
 	t_block			*block;
-
+	
 	getrlimit(RLIMIT_DATA, &rlp);
 	size = (size + 15) & ~15;
 	if ((rlp.rlim_cur - sizeof(t_range) - sizeof(t_block)) < size)

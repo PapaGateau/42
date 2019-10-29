@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 14:18:37 by plogan            #+#    #+#             */
-/*   Updated: 2019/10/29 14:40:43 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/29 15:33:46 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <unistd.h>
 # include <pthread.h>
 
-# define TINY_MAX_BLOCK_SIZE 1024
-# define TINY_RANGE_SIZE (50 * getpagesize())
+# define TINY_MAX_BLOCK_SIZE 128
+# define TINY_RANGE_SIZE (4 * getpagesize())
 
-# define SMALL_MAX_BLOCK_SIZE 1024 * 10
-# define SMALL_RANGE_SIZE (500 * getpagesize())
+# define SMALL_MAX_BLOCK_SIZE 1024
+# define SMALL_RANGE_SIZE (32 * getpagesize())
 
 extern pthread_mutex_t	g_ft_malloc_mutex;
 
