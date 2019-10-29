@@ -1,0 +1,5 @@
+resources:
+- Intel instruction set reference http://faydoc.tripod.com/cpu/
+- x64 Cheat sheet https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
+- Assembly conditions https://www.tutorialspoint.com/assembly_programming/assembly_conditions.htm
+- System calls https://syscalls.kernelgrok.com/
