@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 15:42:20 by plogan            #+#    #+#             */
-/*   Updated: 2019/08/21 18:28:44 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/29 12:31:46 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	*start_realloc(void *ptr, size_t size)
 
 	block = NULL;
 	new = NULL;
+	size = (size + 15) & ~15;
 	if (!ptr)
 		return (start_malloc(size));
 	if (!size && ptr)
@@ -77,8 +78,6 @@ void	*start_realloc(void *ptr, size_t size)
 	}
 	if (!check_ptr(ptr))
 		return (NULL);
-	if (ptr && !size)
-		start_free(ptr);
 	else
 	{
 		block = (t_block *)((char *)ptr - sizeof(t_block));

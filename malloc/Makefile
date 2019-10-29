@@ -6,7 +6,7 @@
 #    By: plogan <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/23 16:23:38 by plogan            #+#    #+#              #
-#    Updated: 2019/08/21 19:15:29 by plogan           ###   ########.fr        #
+#    Updated: 2019/10/29 12:07:50 by plogan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-SRCS = block_tools.c bzero.c calloc.c free.c malloc.c print.c \
+SRCS = block_tools.c bzero.c free.c malloc.c print.c calloc.c \
 	realloc.c show_alloc_mem.c reallocf.c init_mutex.c block_handler.c
 
 CC			= clang

@@ -6,7 +6,7 @@
 /*   By: plogan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 14:18:37 by plogan            #+#    #+#             */
-/*   Updated: 2019/08/21 19:21:16 by plogan           ###   ########.fr       */
+/*   Updated: 2019/10/29 12:09:22 by plogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum			e_range_type
 
 typedef struct			s_block
 {
-	char			padding[4];
+	char			padding[12];
 	t_bool				freed;
 	size_t				size;
 	struct s_block		*next;
@@ -49,7 +49,7 @@ typedef struct			s_block
 
 typedef struct			s_range
 {
-	char			padding[4];
+	char			padding[12];
 	enum e_range_type	type;
 	size_t				space;
 	struct s_range		*next;
@@ -66,16 +66,16 @@ void					show_alloc_mem(void);
 /*
 **						Library functions (bonus)
 */
-void					*calloc(size_t count, size_t size);
 void					*reallocf(void *ptr, size_t size);
+void					*calloc(size_t count, size_t size);
 
 /*
 **						Process
 */
 void					*start_malloc(size_t size);
+void					*start_calloc(size_t count, size_t size);
 void					*start_realloc(void *ptr, size_t size);
 void					start_free(void *ptr);
-void					*start_calloc(size_t count, size_t size);
 void					*start_reallocf(void *ptr, size_t size);
 void					start_show_alloc_mem(void);
 t_range					**get_first_range(void);
