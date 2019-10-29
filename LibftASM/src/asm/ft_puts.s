@@ -6,7 +6,7 @@
 ;    By: plogan <plogan@student.42.fr>              +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/10/17 17:30:37 by plogan            #+#    #+#              ;
-;    Updated: 2019/10/17 17:53:54 by plogan           ###   ########.fr        ;
+;    Updated: 2019/10/29 17:39:20 by plogan           ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -38,7 +38,7 @@ print_str:
 
 print_nl:
   mov rax, SYSCALL_WRITE
-  lea rsi, [rel nl] ; rel? need explanation
+  lea rsi, [rel nl]; load effective address from relative offset of nl to rsi
   mov rdi, STDOUT
   mov rdx, 1
   syscall
