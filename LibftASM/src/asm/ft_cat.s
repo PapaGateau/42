@@ -6,7 +6,7 @@
 ;    By: plogan <plogan@student.42.fr>              +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/10/30 15:46:19 by plogan            #+#    #+#              ;
-;    Updated: 2019/10/30 16:34:02 by plogan           ###   ########.fr        ;
+;    Updated: 2019/10/30 19:46:23 by plogan           ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -19,6 +19,7 @@
       rax         rdi       rsi       rdx
 
 global _ft_cat
+extern _ft_strlen
 
 section .bss
 buf:
@@ -36,10 +37,14 @@ syscall_read:
   syscall
   jc return_error
   cmp rax, 0
-  je return_success
+  jl write_last
 
 write:
-  
+  mov rax, SYSCALL_WRITE
+  jmp syscall_read
+
+write_last:
+  ; call strlen here
 
 return_success:
   leave
