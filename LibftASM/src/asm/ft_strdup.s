@@ -6,7 +6,7 @@
 ;    By: plogan <plogan@student.42.fr>              +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/10/29 17:03:35 by plogan            #+#    #+#              ;
-;    Updated: 2019/10/29 18:32:42 by plogan           ###   ########.fr        ;
+;    Updated: 2019/10/30 15:29:41 by plogan           ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -20,7 +20,14 @@ extern _ft_strlen
 extern _malloc
 
 _ft_strdup:
-  enter 0, 0 ; enter new stack frame for procedure
+  ; rbp points to the base of the current stack frame
+  ; rsp points to the top of the current stack frame
+  ; enter 0, 0 ; enter new stack frame
+  ; equivalent to:
+  push rbp      ; preserve rbp
+  mov rbp, rsp  ; save stack frame address
+  sub rsp, 0    ; first parameter of enter, (0)bytes reserved
+
   push rdi
   call _ft_strlen
   inc rax
@@ -41,5 +48,9 @@ copy_str:
   pop rax
 
 return:
-  leave ; release stack frame
+  ; leave ; counterpart of enter. free stack frame and restore rbp/rsp
+  ; equivalent to:
+  mov rsp, rbp  ; restore rsp
+  pop rbp       ; restore rbp
+
   ret
