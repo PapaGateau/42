@@ -1,5 +1,8 @@
+Simple library of assembly functions for MacOS 64bit assembly using Intel syntax
+
 resources:
 - Intel instruction set reference http://faydoc.tripod.com/cpu/
 - x64 Cheat sheet https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
 - Assembly conditions https://www.tutorialspoint.com/assembly_programming/assembly_conditions.htm
 - System calls https://syscalls.kernelgrok.com/
+- understanding stack frame https://idea.popcount.org/2013-07-16-baby-steps-in-x86-assembly/

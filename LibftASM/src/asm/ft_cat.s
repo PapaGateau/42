@@ -6,7 +6,7 @@
 ;    By: plogan <plogan@student.42.fr>              +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/10/30 15:46:19 by plogan            #+#    #+#              ;
-;    Updated: 2019/10/30 19:46:23 by plogan           ###   ########.fr        ;
+;    Updated: 2019/10/31 14:57:11 by plogan           ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -16,7 +16,9 @@
 %define BUFF_SIZE 0x100
 
 ; size_t read(int fd, void *buf, size_t n)
-      rax         rdi       rsi       rdx
+;     rax         rdi       rsi       rdx
+
+
 
 global _ft_cat
 extern _ft_strlen
@@ -31,25 +33,24 @@ _ft_cat:
   mov rbp, rsp
 
 syscall_read:
+  push rdi
   lea rsi, [rel buf]
   mov rdx, BUFF_SIZE
   mov rax, SYSCALL_READ
   syscall
-  jc return_error
+  jc return
   cmp rax, 0
-  jl write_last
+  jle return
 
 write:
+  mov rdi, STDOUT
+  lea rsi, [rel buf]
+  mov rdx, rax
   mov rax, SYSCALL_WRITE
+  pop rdi
   jmp syscall_read
 
-write_last:
-  ; call strlen here
-
-return_success:
+return:
+  pop rdi
   leave
-  ret
-
-return_error:
-  mov rax, -1
   ret
