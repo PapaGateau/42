@@ -1,0 +1,25 @@
+#VM startup:
+#VirtualBox with linux Mint
+#boot with ISO
+#open port in network settings host 127.0.0.1:4242 guest XX.XX.XX.XX:4242
+#from host terminal
+ssh level00@localhost -p 4242
+
+#find option -user searches for files owner by specified user
+#2>/dev/null redirects STDERR output to null
+
+find / -user flag 00 2>/dev/null
+/usr/sbin/john
+/rofs/usr/sbin/john
+
+cat /usr/sbin/john
+cdiiddwpgswtgt
+
+#this string does not work as the password so perhaps it must be deciphered?
+#using ceasar cipher and key 11 we get the string "nottoohardhere" (https://www.xarg.org/tools/caesar-cipher/)
+
+su flag00
+nottoohardhere
+getflag
+x24ti5gi3x0ol2eh4esiuxias
+
