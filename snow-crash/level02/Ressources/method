@@ -1,0 +1,19 @@
+#a .pcap file can be found in the user directory
+#these files are network packet snapshots used by Wireshark
+#using secure copy (scp), we can copy it to our host system and inspect it
+#from host:
+scp -P 4242 level02@localhost:/home/user/level02/level02.pcap .
+
+#after a prompt to enter level02 user password, the file is copied to host
+#the file has insufficient permissions to open it in Wireshark
+chmod 777 level02.pcap
+
+#by using the follow TCP stream tool in Wireshark and showing the data as ASCII
+#we can see a password string: ft_wandr...NDRel.L0L
+#however if we show the data as hexdump we can see that the '.' characters
+#are 7F aka DEL. if we take these into account, we find the correct password
+su flag02
+ft_waNDReL0L
+Don't forget to launch getflag !
+getflag
+Check flag.Here is your token : kooda2puivaav1idi4f57q8iq
