@@ -6,7 +6,7 @@
 ;    By: plogan <plogan@student.42.fr>              +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/10/30 15:46:19 by plogan            #+#    #+#              ;
-;    Updated: 2019/10/31 14:57:11 by plogan           ###   ########.fr        ;
+;    Updated: 2020/01/21 17:29:12 by plogan           ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -18,10 +18,7 @@
 ; size_t read(int fd, void *buf, size_t n)
 ;     rax         rdi       rsi       rdx
 
-
-
 global _ft_cat
-extern _ft_strlen
 
 section .bss
 buf:
@@ -29,28 +26,28 @@ buf:
 
 section .text
 _ft_cat:
-  push rbp
-  mov rbp, rsp
+  push rbp ; save address of previous stack frame
+  mov rbp, rsp ; save address of current stack frame
+  lea rsi, [rel buf] ; loads relative address of the buffer (mov would load absolute address)
 
-syscall_read:
-  push rdi
-  lea rsi, [rel buf]
-  mov rdx, BUFF_SIZE
+read:
   mov rax, SYSCALL_READ
+  mov rdx, BUFF_SIZE
   syscall
   jc return
-  cmp rax, 0
-  jle return
+  test rax, rax
+  je return
 
 write:
-  mov rdi, STDOUT
-  lea rsi, [rel buf]
   mov rdx, rax
   mov rax, SYSCALL_WRITE
+  push rdi
+  mov rdi, STDOUT
+  syscall
+  jc return
   pop rdi
-  jmp syscall_read
+  jmp read
 
 return:
-  pop rdi
   leave
   ret
