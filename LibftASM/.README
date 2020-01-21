@@ -1,6 +1,22 @@
 Simple library of assembly functions for MacOS 64bit assembly using Intel syntax
 
-resources:
+Purpose: Introduction to assembly language
+Goal: write a number of basic LIB-C functions using assembly
+Skills acquired:
+#Compiling asm and C
+using assembly compiler nasm and gcc we can create objects from both languages
+and link them together as a binary
+nasm -f macho64 src_asm.s
+gcc -c src_c.c -o src_c.o
+gcc src_c.o src_asm.o -o binary
+#Basic understanding of assembly language (The stack, how registers and instructions interact with it)
+
+Project structure:
+
+
+Compiling this project/Setup:
+
+Useful links and resources:
 - Intel instruction set reference http://faydoc.tripod.com/cpu/
 - x64 Cheat sheet https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
 - Assembly conditions https://www.tutorialspoint.com/assembly_programming/assembly_conditions.htm
